@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Pack Family Guy Viral</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/payment.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <div class="logo">
+                <i class="fas fa-tv"></i>
+                <span>Family Guy Viral</span>
+            </div>
+            <div class="secure-badge">
+                <i class="fas fa-lock"></i>
+                <span>Pagamento Seguro</span>
+            </div>
+        </div>
+
+        <div class="payment-content">
+            <div class="payment-card">
+                <div class="payment-progress">
+                    <div class="progress-step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Dados</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Pagamento</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Confirmação</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Customer Info -->
+                <div id="customerInfoStep" class="payment-step active">
+                    <h2>Complete Seus Dados</h2>
+                    <p class="step-description">Preencha as informações abaixo para finalizar sua compra</p>
+                    <form id="customerForm" class="payment-form">
+                        <div class="form-group">
+                            <label for="customerName">Nome Completo *</label>
+                            <input type="text" id="customerName" name="customerName" required placeholder="Digite seu nome completo">
+                        </div>
+                        <div class="form-group">
+                            <label for="customerEmail">WhatsApp *</label>
+                            <input type="text" id="customerEmail" name="customerEmail" required placeholder="(00) 91234-5678">
+                            <small>O pack será enviado via WhatsApp após o pagamento</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCpf">CPF *</label>
+                            <input type="text" id="customerCpf" name="customerCpf" required placeholder="000.000.000-00" maxlength="14">
+                        </div>
+                        <button type="submit" class="btn-next">
+                            <span>Continuar para Pagamento</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Step 2: Payment -->
+                <div id="pixPaymentStep" class="payment-step">
+                    <div class="back-button" onclick="goBackToCustomerInfo()">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Voltar</span>
+                    </div>
+                    <h2>Pagamento via PIX</h2>
+                    <p class="step-description">Escaneie o QR Code ou copie o código PIX para pagar</p>
+
+                    <div class="pix-container">
+                        <div class="pix-timer">
+                            <i class="fas fa-clock"></i>
+                            <span>Tempo restante: <strong id="pixTimer">10:00</strong></span>
+                        </div>
+
+                        <div class="pix-qrcode" id="pixQrCode">
+                            <div class="qr-placeholder">
+                                <i class="fas fa-qrcode"></i>
+                                <p>Gerando QR Code...</p>
+                            </div>
+                        </div>
+
+                        <div class="pix-value">
+                            <span>Valor a pagar:</span>
+                            <strong>R$ 29,90</strong>
+                        </div>
+
+                        <div class="pix-code-container">
+                            <label>Código PIX Copia e Cola:</label>
+                            <div class="pix-code-box">
+                                <input type="text" id="pixCode" readonly>
+                                <button class="btn-copy" onclick="copyPixCode()">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copiar</span>
+                                </button>
+                            </div>
+                            <small>Copie o código e cole no app do seu banco</small>
+                        </div>
+
+                        <div class="pix-instructions">
+                            <h3>Como pagar:</h3>
+                            <ol>
+                                <li>Abra o app do seu banco</li>
+                                <li>Escolha pagar via PIX</li>
+                                <li>Escaneie o QR Code ou cole o código acima</li>
+                                <li>Confirme o pagamento</li>
+                                <li>Aguarde a confirmação (geralmente instantânea)</li>
+                            </ol>
+                        </div>
+
+                        <div class="payment-status" id="paymentStatus">
+                            <div class="status-icon">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <p>Aguardando pagamento...</p>
+                            <small>A confirmação é automática e acontece em segundos</small>
+                        </div>
+
+                        <button type="button" class="btn-paid" onclick="showConfirmation()">
+                            <i class="fas fa-check"></i>
+                            <span>Já Realizei o Pagamento</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Confirmation -->
+                <div id="confirmationStep" class="payment-step">
+                    <div class="success-animation">
+                        <div class="success-checkmark">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+
+                    <h2>Pagamento Confirmado! 🎉</h2>
+                    <p class="step-description">Seu pedido foi processado com sucesso</p>
+
+                    <div class="confirmation-details">
+                        <div class="detail-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Pagamento Aprovado</strong>
+                                <p>Transação confirmada com sucesso</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <div>
+                                <strong>WhatsApp Enviado</strong>
+                                <p id="emailSent">Enviando para <span id="confirmEmail"></span></p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <strong>Acesso Liberado</strong>
+                                <p>Verifique seu WhatsApp para baixar o pack</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="confirmation-alert">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Importante!</strong>
+                            <p>Você receberá uma mensagem no WhatsApp em até 5 minutos com o link de download. Verifique também o WhatsApp Business se não receber.</p>
+                        </div>
+                    </div>
+
+                    <div class="confirmation-actions">
+                        <a href="index.html" class="btn-home">
+                            <i class="fas fa-home"></i>
+                            <span>Voltar ao Início</span>
+                        </a>
+                    </div>
+
+                    <div class="order-summary-final">
+                        <h3>Resumo do Pedido</h3>
+                        <div class="summary-row">
+                            <span>ID do Pedido:</span>
+                            <strong id="orderId"></strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>Data:</span>
+                            <strong id="orderDate"></strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>Produto:</span>
+                            <strong>Pack de Cortes Virais Family Guy</strong>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Pago:</span>
+                            <strong>R$ 29,90</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-sidebar">
+                <div class="product-summary">
+                    <h3>Resumo do Pedido</h3>
+                    <div class="product-item">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=100&h=100&fit=crop" alt="Pack Family Guy">
+                        <div class="product-info">
+                            <h4>Pack de Cortes Virais Family Guy</h4>
+                            <p>+500 cortes em HD</p>
+                        </div>
+                    </div>
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Subtotal:</span>
+                            <span>R$ 29,90</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Desconto:</span>
+                            <span class="discount">-R$ 0,00</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total:</span>
+                            <strong>R$ 29,90</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-badges">
+                    <div class="badge-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Pagamento Seguro</strong>
+                            <small>Dados criptografados</small>
+                        </div>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-undo"></i>
+                        <div>
+                            <strong>Garantia de 7 Dias</strong>
+                            <small>100% de reembolso</small>
+                        </div>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <strong>Suporte 24/7</strong>
+                            <small>Estamos aqui para ajudar</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-mini">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Comprei e recebi na hora! Conteúdo top demais!"</p>
+                    <strong>- Marcos Costa</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/payment.js"></script>
+</body>
+</html>
