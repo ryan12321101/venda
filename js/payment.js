@@ -195,18 +195,20 @@ function showConfirmation() {
 }
 
 // Função para enviar WhatsApp com link e mensagem
-function sendConfirmationWhatsApp() {
-    const message = `Olá ${customerData.name}, seu pedido de ID ${orderData.id} no valor de R$${orderData.amount.toFixed(2)} foi registrado com sucesso! seu pack: https://drive.google.com/drive/folders/1n_XSEWqBu3U1vWUvLkrPDC6uGMQ8cDP-`;
-    const phone = customerData.phone;
-    const url = `https://api.whatsapp.com/send?phone=55${phone}&text=${encodeURIComponent(message)}`;
-    
-    // Abre o WhatsApp Web ou App
-    window.open(url, '_blank');
+function confirmarPagamentoWhatsApp() {
+    const seuNumero = '5594984046320'; // <-- SEU número aqui
 
-    // Atualiza interface
-    document.getElementById('emailSent').innerHTML =
-        `<i class="fas fa-check" style="color: var(--primary-green);"></i> Link do WhatsApp enviado para ${phone}`;
+    const mensagem =
+        `Olá, acabei de realizar o pagamento via PIX.\n\n` +
+        `Nome: ${customerData.name}\n` +
+        `Pedido: ${orderData.id}\n\n` +
+        `Vou enviar o comprovante agora.`;
+
+    const link = `https://wa.me/${seuNumero}?text=${encodeURIComponent(mensagem)}`;
+
+    window.open(link, '_blank');
 }
+
 
 // Auto-check payment status (simulate webhook)
 function startPaymentStatusCheck() {
